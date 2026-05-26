@@ -132,24 +132,7 @@ LightGBM was selected over standard linear models and standard Random Forests du
 
 ## 🖼 UI/UX Showcase
 
-> 💡 *Note: If any preview images are missing below, ensure your local files are placed inside the `./assets` directory.*
-
-<div align="center">
-<p><strong>Dynamic Prediction Interface</strong></p>
-<img src="./assets/demo.gif" alt="Prediction Interface" width="100%" />
-<br /><br />
-<p><strong>Homepage Dashboard</strong></p>
-<img src="./assets/homepage.png" alt="Homepage Preview" width="100%" />
-<br /><br />
-<p><strong>Analytics Trends Panel</strong></p>
-<img src="./assets/dashboard.png" alt="Analytics Dashboard" width="100%" />
-<br /><br />
-<p><strong>Historical Records Management</strong></p>
-<img src="./assets/records.png" alt="Records Management" width="100%" />
-<br /><br />
-<p><strong>Mobile Responsive Optimization</strong></p>
-<img src="./assets/mobile.png" alt="Mobile Responsive Layout" width="40%" />
-</div>
+<img width="1469" height="799" alt="Screenshot 2026-05-26 at 5 53 17 PM" src="https://github.com/user-attachments/assets/b32d474c-3ea6-44ed-9a53-316e806d6ea1" />
 
 ---
 
