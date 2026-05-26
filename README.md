@@ -208,7 +208,7 @@ Open your browser and navigate to `http://127.0.0.1:5000/`.
 **Siva** — Full-Stack Machine Learning Developer
 
 * **GitHub:** [@sivadev022](https://github.com/sivadev022)
-* **LinkedIn:** [Siva on LinkedIn]([https://www.google.com/search?q=https://linkedin.com/in/your-profile-placeholder](https://www.linkedin.com/in/siva-rama-krishna-medekunda-180ab831a/))
+* **LinkedIn:** [Siva on LinkedIn](https://www.linkedin.com/in/siva-rama-krishna-medekunda-180ab831a/)
 * **Portfolio:** [sivadev.dev](https://www.google.com/search?q=https://your-portfolio-placeholder.dev)
 
 ---
