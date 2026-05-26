@@ -1,7 +1,7 @@
 
 <div align="center">
 
-  <img src="https://readme-typing-svg.demolab.com?font=Inter&weight=700&size=36&duration=3000&pause=1000&color=2563EB&center=true&vCenter=true&width=600&height=70" alt="Northstone Title" />
+<img width="215" height="57" alt="Screenshot 2026-05-26 at 5 52 31 PM" src="https://github.com/user-attachments/assets/1334cd3d-ff6a-4c43-bc98-b332a6d1ebe1" />
 
   <p align="center">
     <strong>A full-stack real estate price prediction platform combining a high-performance LightGBM model with a clean, responsive web dashboard.</strong>
