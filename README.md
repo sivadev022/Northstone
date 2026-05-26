@@ -16,7 +16,6 @@
 
   <br />
 
-  <img src="./assets/banner.png" alt="Northstone Project Banner" width="100%" />
 
 </div>
 
@@ -42,8 +41,8 @@
 The application is deployed and fully operational:
 👉 **[Live Deployment Link](https://northstone.onrender.com/)** *(Note: Initial page load may take a few seconds if the cloud instance is spinning up from a sleep state).*
 
----
-<img width="209" height="60" alt="Screenshot 2026-05-26 at 5 44 26 PM" src="https://github.com/user-attachments/assets/c9cc9a1f-5c36-454b-9c46-641be89a8839" />
+--<img width="1469" height="799" alt="Screenshot 2026-05-26 at 5 53 17 PM" src="https://github.com/user-attachments/assets/b32d474c-3ea6-44ed-9a53-316e806d6ea1" />
+
 
 ## 💡 Why I Built This
 
