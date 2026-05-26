@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% block title %}{{ brand_name }} | Property Value Intelligence{% endblock %}
+{% block body_class %}home-page{% endblock %}
+
+{% block content %}
+{% set default_location = location_options[0] %}
+{% set selected_city = form_values.get('city', default_location.city) %}
+{% set selected_place = form_values.get('place_name', default_values.get('place_name', '')) %}
+
+<section class="hero section-shell" id="home">
+    <div class="hero-copy-block reveal">
+        <span class="badge">AI-assisted valuation</span>
+        <h1>Property price intelligence for faster market decisions.</h1>
+        <p>
+            {{ brand_name }} helps teams estimate residential property value from location, space, condition, and neighborhood signals using a trained ML model.
+        </p>
+        <div class="hero-actions">
+            <a class="btn btn-primary" href="#prediction">Start valuation</a>
+            <a class="btn btn-secondary" href="{{ url_for('records') }}">Open dashboard</a>
+        </div>
+        <div class="trust-row" aria-label="Trust indicators">
+            <span>LightGBM model</span>
+            <span>SQLite audit trail</span>
+            <span>INR-ready output</span>
+        </div>
+    </div>
+
+    <aside class="analytics-preview reveal" aria-label="Analytics preview">
+        <div class="preview-header">
+            <div>
+                <span class="overline">Portfolio snapshot</span>
+                <strong>King County Markets</strong>
+            </div>
+            <span class="status-dot">Live</span>
+        </div>
+        <div class="preview-value">
+            <span>Median estimate</span>
+            <strong>INR 7.4 Cr</strong>
+        </div>
+        <div class="preview-bars" aria-hidden="true">
+            <span style="--height: 48%"></span>
+            <span style="--height: 68%"></span>
+            <span style="--height: 42%"></span>
+            <span style="--height: 78%"></span>
+            <span style="--height: 58%"></span>
+            <span style="--height: 84%"></span>
+        </div>
+        <dl class="preview-list">
+            <div>
+                <dt>Accuracy signal</dt>
+                <dd>High R² workflow</dd>
+            </div>
+            <div>
+                <dt>Active inputs</dt>
+                <dd>20 model features</dd>
+            </div>
+        </dl>
+    </aside>
+</section>
+
+<section class="stats-band section-shell reveal" aria-label="Product statistics">
+    <article>
+        <strong data-counter="21">0</strong><span>K+</span>
+        <p>training records</p>
+    </article>
+    <article>
+        <strong data-counter="6">0</strong>
+        <p>sample markets</p>
+    </article>
+    <article>
+        <strong>Fast</strong>
+        <p>single-property valuation</p>
+    </article>
+    <article>
+        <strong>Clean</strong>
+        <p>saved prediction history</p>
+    </article>
+</section>
+
+<section class="section-shell accuracy-section reveal">
+    <div>
+        <span class="badge">Prediction quality</span>
+        <h2>Built around practical model inputs, not visual noise.</h2>
+    </div>
+    <p>
+        The interface keeps the model requirements transparent: location, property scale, quality, age, and neighborhood comparison fields stay organized for review before each prediction.
+    </p>
+</section>
+
+<section class="section-shell prediction-section" id="prediction">
+    <div class="section-heading reveal">
+        <span class="badge">Valuation workspace</span>
+        <h2>Create a property estimate</h2>
+        <p>Choose a market, add property details, and save the model output to the records dashboard.</p>
+    </div>
+
+    <form class="panel prediction-form reveal" action="{{ url_for('predict') }}" method="POST" data-prediction-form novalidate>
+        <div class="form-header">
+            <div>
+                <h3>Property profile</h3>
+                <p>Enterprise-style inputs with model-ready defaults.</p>
+            </div>
+            <span class="badge muted">Result saved automatically</span>
+        </div>
+
+        <div class="form-sections">
+            <section class="form-group location-group">
+                <div class="group-heading with-icon">
+                    <span class="section-icon" aria-hidden="true">⌖</span>
+                    <div>
+                        <h4>Location</h4>
+                        <p>Select a city market and add a place name for human-readable context.</p>
+                    </div>
+                </div>
+                <div class="field-grid compact">
+                    <div class="field">
+                        <label for="city">City</label>
+                        <input id="city" name="city" list="city-options" value="{{ selected_city }}" data-location-combobox autocomplete="off" required>
+                        <datalist id="city-options">
+                            {% for location in location_options %}
+                                <option value="{{ location.city }}" data-zipcode="{{ location.zipcode }}" data-lat="{{ location.lat }}" data-long="{{ location.long }}" data-area="{{ location.area }}">{{ location.area }}</option>
+                            {% endfor %}
+                        </datalist>
+                        <small>Search Seattle, Bellevue, Redmond, Kirkland, Tacoma, or Renton.</small>
+                    </div>
+                    <div class="field place-field">
+                        <label for="place_name"><span class="label-icon" aria-hidden="true">⌖</span>Place / Locality</label>
+                        <input id="place_name" name="place_name" type="text" value="{{ selected_place }}" placeholder="Downtown Seattle" list="place-suggestions" data-place-input>
+                        <datalist id="place-suggestions">
+                            <option value="Downtown Seattle"></option>
+                            <option value="Redmond Ridge"></option>
+                            <option value="Kirkland Waterfront"></option>
+                            <option value="MG Road"></option>
+                            <option value="Banjara Hills"></option>
+                        </datalist>
+                        <small>Enter city, area, or locality for better context</small>
+                    </div>
+                    <div class="location-readout" data-location-readout>
+                        <span>Market code</span>
+                        <strong>{{ form_values.get('zipcode', default_values.get('zipcode')) }}</strong>
+                        <p>{{ form_values.get('lat', default_values.get('lat')) }}, {{ form_values.get('long', default_values.get('long')) }}</p>
+                    </div>
+                </div>
+                <input type="hidden" name="zipcode" value="{{ form_values.get('zipcode', default_values.get('zipcode', default_location.zipcode)) }}" data-location-zipcode>
+                <input type="hidden" name="lat" value="{{ form_values.get('lat', default_values.get('lat', default_location.lat)) }}" data-location-lat>
+                <input type="hidden" name="long" value="{{ form_values.get('long', default_values.get('long', default_location.long)) }}" data-location-long>
+            </section>
+
+            <section class="form-group">
+                <div class="group-heading">
+                    <h4>Transaction</h4>
+                    <p>Sale timeline and source property identifier.</p>
+                </div>
+                <div class="field-grid compact">
+                    {% for field in ["id", "date"] %}
+                        <div class="field">
+                            <label for="{{ field }}">{{ field_labels[field] }}</label>
+                            <input id="{{ field }}" name="{{ field }}" type="{{ field_types[field] }}" step="{{ step_values.get(field, '1') }}" value="{{ form_values.get(field, default_values.get(field, '')) }}" required>
+                            <small>{% if field == "date" %}Used to calculate property and renovation age.{% else %}Internal source identifier from the housing dataset.{% endif %}</small>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section class="form-group">
+                <div class="group-heading">
+                    <h4>Space and layout</h4>
+                    <p>Interior area, lot size, rooms, floors, and neighborhood comparison fields.</p>
+                </div>
+                <div class="field-grid">
+                    {% for field in ["bedrooms", "bathrooms", "floors", "sqft_living", "sqft_lot", "sqft_above", "sqft_basement", "sqft_living15", "sqft_lot15"] %}
+                        <div class="field">
+                            <label for="{{ field }}">{{ field_labels[field] }}</label>
+                            <input id="{{ field }}" name="{{ field }}" type="{{ field_types[field] }}" step="{{ step_values.get(field, '1') }}" value="{{ form_values.get(field, default_values.get(field, '')) }}" required>
+                            <small></small>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section class="form-group">
+                <div class="group-heading">
+                    <h4>Quality and condition</h4>
+                    <p>Grade, condition, renovation, view, and waterfront indicators.</p>
+                </div>
+                <div class="field-grid">
+                    {% for field in ["waterfront", "view", "condition", "grade", "yr_built", "yr_renovated"] %}
+                        <div class="field">
+                            <label for="{{ field }}">{{ field_labels[field] }}</label>
+                            <input id="{{ field }}" name="{{ field }}" type="{{ field_types[field] }}" step="{{ step_values.get(field, '1') }}" value="{{ form_values.get(field, default_values.get(field, '')) }}" required>
+                            <small></small>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+
+        <div class="form-actions">
+            <p>Output is converted to INR and stored in your prediction records.</p>
+            <button class="btn btn-primary" type="submit">
+                <span class="button-label">Estimate property value</span>
+                <span class="button-loader" aria-hidden="true"></span>
+            </button>
+        </div>
+    </form>
+</section>
+
+<section class="section-shell insight-section" id="insights">
+    <div class="section-heading reveal">
+        <span class="badge">Why it feels real</span>
+        <h2>A focused product surface for valuation workflows.</h2>
+    </div>
+    <div class="insight-grid">
+        <article class="panel feature-card reveal">
+            <h3>Model-aware input</h3>
+            <p>Form values map directly into the saved model’s expected feature order.</p>
+        </article>
+        <article class="panel feature-card reveal">
+            <h3>Market context</h3>
+            <p>City selection sets the zipcode and coordinates needed by the prediction model.</p>
+        </article>
+        <article class="panel feature-card reveal">
+            <h3>Operational records</h3>
+            <p>Every estimate can be searched, updated, and deleted from a dashboard-style table.</p>
+        </article>
+    </div>
+</section>
+{% endblock %}

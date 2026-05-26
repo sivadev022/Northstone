@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}Update Prediction #{{ record_id }} | {{ brand_name }}{% endblock %}
+{% block body_class %}update-page{% endblock %}
+
+{% block content %}
+{% set default_location = location_options[0] %}
+{% set selected_city = form_values.get('city', default_location.city) %}
+{% set selected_place = form_values.get('place_name', '') %}
+
+<section class="section-shell page-top">
+    <div class="page-heading reveal">
+        <span class="badge">Edit valuation</span>
+        <h1>Update prediction #{{ record_id }}</h1>
+        <p>Adjust the saved property profile and generate a refreshed estimate.</p>
+    </div>
+    <a class="btn btn-secondary reveal" href="{{ url_for('records') }}">Back to records</a>
+</section>
+
+<section class="section-shell prediction-section compact-page">
+    <form class="panel prediction-form reveal" action="{{ url_for('update', record_id=record_id) }}" method="POST" data-prediction-form novalidate>
+        <div class="form-header">
+            <div>
+                <h3>Saved property profile</h3>
+                <p>Review the market and model features before saving.</p>
+            </div>
+            <span class="badge muted">Record #{{ record_id }}</span>
+        </div>
+
+        <div class="form-sections">
+            <section class="form-group location-group">
+                <div class="group-heading with-icon">
+                    <span class="section-icon" aria-hidden="true">⌖</span>
+                    <div>
+                        <h4>Location</h4>
+                        <p>City selection controls the zipcode and coordinate values used by the model.</p>
+                    </div>
+                </div>
+                <div class="field-grid compact">
+                    <div class="field">
+                        <label for="city">City</label>
+                        <input id="city" name="city" list="city-options" value="{{ selected_city }}" data-location-combobox autocomplete="off" required>
+                        <datalist id="city-options">
+                            {% for location in location_options %}
+                                <option value="{{ location.city }}" data-zipcode="{{ location.zipcode }}" data-lat="{{ location.lat }}" data-long="{{ location.long }}" data-area="{{ location.area }}">{{ location.area }}</option>
+                            {% endfor %}
+                        </datalist>
+                        <small>Search Seattle, Bellevue, Redmond, Kirkland, Tacoma, or Renton.</small>
+                    </div>
+                    <div class="field place-field">
+                        <label for="place_name"><span class="label-icon" aria-hidden="true">⌖</span>Place / Locality</label>
+                        <input id="place_name" name="place_name" type="text" value="{{ selected_place }}" placeholder="Downtown Seattle" list="place-suggestions" data-place-input>
+                        <datalist id="place-suggestions">
+                            <option value="Downtown Seattle"></option>
+                            <option value="Redmond Ridge"></option>
+                            <option value="Kirkland Waterfront"></option>
+                            <option value="MG Road"></option>
+                            <option value="Banjara Hills"></option>
+                        </datalist>
+                        <small>Enter city, area, or locality for better context</small>
+                    </div>
+                    <div class="location-readout" data-location-readout>
+                        <span>Market code</span>
+                        <strong>{{ form_values.get('zipcode', default_values.get('zipcode')) }}</strong>
+                        <p>{{ form_values.get('lat', default_values.get('lat')) }}, {{ form_values.get('long', default_values.get('long')) }}</p>
+                    </div>
+                </div>
+                <input type="hidden" name="zipcode" value="{{ form_values.get('zipcode', default_values.get('zipcode', default_location.zipcode)) }}" data-location-zipcode>
+                <input type="hidden" name="lat" value="{{ form_values.get('lat', default_values.get('lat', default_location.lat)) }}" data-location-lat>
+                <input type="hidden" name="long" value="{{ form_values.get('long', default_values.get('long', default_location.long)) }}" data-location-long>
+            </section>
+
+            <section class="form-group">
+                <div class="group-heading">
+                    <h4>Transaction</h4>
+                    <p>Sale timeline and source property identifier.</p>
+                </div>
+                <div class="field-grid compact">
+                    {% for field in ["id", "date"] %}
+                        <div class="field">
+                            <label for="{{ field }}">{{ field_labels[field] }}</label>
+                            <input id="{{ field }}" name="{{ field }}" type="{{ field_types[field] }}" step="{{ step_values.get(field, '1') }}" value="{{ form_values.get(field, '') }}" required>
+                            <small></small>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section class="form-group">
+                <div class="group-heading">
+                    <h4>Space and layout</h4>
+                    <p>Interior area, lot size, rooms, floors, and neighborhood comparison fields.</p>
+                </div>
+                <div class="field-grid">
+                    {% for field in ["bedrooms", "bathrooms", "floors", "sqft_living", "sqft_lot", "sqft_above", "sqft_basement", "sqft_living15", "sqft_lot15"] %}
+                        <div class="field">
+                            <label for="{{ field }}">{{ field_labels[field] }}</label>
+                            <input id="{{ field }}" name="{{ field }}" type="{{ field_types[field] }}" step="{{ step_values.get(field, '1') }}" value="{{ form_values.get(field, '') }}" required>
+                            <small></small>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section class="form-group">
+                <div class="group-heading">
+                    <h4>Quality and condition</h4>
+                    <p>Grade, condition, renovation, view, and waterfront indicators.</p>
+                </div>
+                <div class="field-grid">
+                    {% for field in ["waterfront", "view", "condition", "grade", "yr_built", "yr_renovated"] %}
+                        <div class="field">
+                            <label for="{{ field }}">{{ field_labels[field] }}</label>
+                            <input id="{{ field }}" name="{{ field }}" type="{{ field_types[field] }}" step="{{ step_values.get(field, '1') }}" value="{{ form_values.get(field, '') }}" required>
+                            <small></small>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+
+        <div class="form-actions">
+            <p>Saving will update this record and generate a fresh INR estimate.</p>
+            <button class="btn btn-primary" type="submit">
+                <span class="button-label">Save and estimate</span>
+                <span class="button-loader" aria-hidden="true"></span>
+            </button>
+        </div>
+    </form>
+</section>
+{% endblock %}

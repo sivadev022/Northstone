@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Prediction Result | {{ brand_name }}{% endblock %}
+{% block body_class %}result-page{% endblock %}
+
+{% block content %}
+<section class="section-shell result-layout">
+    <div class="panel result-card reveal" aria-live="polite">
+        <span class="success-badge">Estimate complete</span>
+        <h1>Estimated property value</h1>
+        <div class="price-display" data-price-text="{{ predicted_price|inr }}">{{ predicted_price|inr }}</div>
+        <p>{{ location_label or "Selected market" }} · Generated from the submitted property profile.</p>
+        <div class="result-actions">
+            <a class="btn btn-primary" href="{{ url_for('index') }}#prediction">Create another</a>
+            <a class="btn btn-secondary" href="{{ url_for('records') }}">View records</a>
+            {% if record_id %}
+                <a class="btn btn-tertiary" href="{{ url_for('update', record_id=record_id) }}">Update record</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <aside class="panel result-summary reveal">
+        <h2>Property summary</h2>
+        <dl class="data-grid">
+            <div>
+                <dt>Place / Locality</dt>
+                <dd>{{ place_name or location_label or "Selected market" }}</dd>
+            </div>
+            <div>
+                <dt>Market</dt>
+                <dd>{{ location_label or "Selected market" }}</dd>
+            </div>
+            <div>
+                <dt>Bedrooms</dt>
+                <dd>{{ property_summary.bedrooms if property_summary else "—" }}</dd>
+            </div>
+            <div>
+                <dt>Bathrooms</dt>
+                <dd>{{ property_summary.bathrooms if property_summary else "—" }}</dd>
+            </div>
+            <div>
+                <dt>Living area</dt>
+                <dd>{{ property_summary.sqft_living if property_summary else "—" }} sqft</dd>
+            </div>
+            <div>
+                <dt>Grade</dt>
+                <dd>{{ property_summary.grade if property_summary else "—" }}</dd>
+            </div>
+            <div>
+                <dt>Zipcode</dt>
+                <dd>{{ property_summary.zipcode if property_summary else "—" }}</dd>
+            </div>
+        </dl>
+    </aside>
+</section>
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Records | {{ brand_name }}{% endblock %}
+{% block body_class %}records-page{% endblock %}
+
+{% block content %}
+<section class="section-shell page-top">
+    <div class="page-heading reveal">
+        <span class="badge">Analytics dashboard</span>
+        <h1>Prediction records</h1>
+        <p>Search, review, update, and manage every saved property valuation.</p>
+    </div>
+    <a class="btn btn-primary reveal" href="{{ url_for('index') }}#prediction">New prediction</a>
+</section>
+
+<section class="section-shell records-section">
+    {% if records %}
+        <div class="dashboard-strip reveal">
+            <article>
+                <span>Total records</span>
+                <strong>{{ records|length }}</strong>
+            </article>
+            <article>
+                <span>Latest market</span>
+                <strong>{{ display_location(records[0]) }}</strong>
+            </article>
+            <article>
+                <span>Workflow</span>
+                <strong>Review ready</strong>
+            </article>
+        </div>
+
+        <div class="panel table-shell reveal">
+            <div class="table-tools">
+                <label class="search-field">
+                    <span>Search records</span>
+                    <input type="search" placeholder="Try Seattle, zipcode, price, record ID..." data-table-search aria-label="Search prediction records">
+                </label>
+                <div class="filter-group" aria-label="Table filters">
+                    <button class="filter-chip is-active" type="button">All markets</button>
+                    <button class="filter-chip" type="button">Recent</button>
+                    <div class="table-status" data-pagination-status>Showing all records</div>
+                </div>
+            </div>
+            <div class="table-wrap">
+                <table class="records-table" data-records-table>
+                    <thead>
+                        <tr>
+                            <th>Record</th>
+                            <th>Location</th>
+                            <th>Place</th>
+                            <th>Sale date</th>
+                            <th>Property</th>
+                            <th>Quality</th>
+                            <th>Prediction</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in records %}
+                            <tr>
+                                <td><strong>#{{ record.id }}</strong></td>
+                                <td>
+                                    <span class="table-main">{{ display_location(record) }}</span>
+                                    <small>{{ record.zipcode }} · {{ record.lat }}, {{ record.long }}</small>
+                                </td>
+                                <td>{{ record.place_name or "—" }}</td>
+                                <td>{{ display_date(record.date) }}</td>
+                                <td>
+                                    <span class="table-main">{{ record.bedrooms }} bd / {{ record.bathrooms }} ba</span>
+                                    <small>{{ record.sqft_living }} sqft · lot {{ record.sqft_lot }}</small>
+                                </td>
+                                <td>Grade {{ record.grade }} · Condition {{ record.condition }}</td>
+                                <td><strong class="table-price">{{ record.predicted_price|inr }}</strong></td>
+                                <td>{{ record.created_at }}</td>
+                                <td>
+                                    <div class="row-actions">
+                                        <a class="action-btn edit" href="{{ url_for('update', record_id=record.id) }}">Update</a>
+                                        <button class="action-btn danger" type="button" data-delete-trigger data-delete-action="{{ url_for('delete', record_id=record.id) }}">Delete</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination-ui" aria-label="Pagination design">
+                <button type="button" disabled>Previous</button>
+                <span>Page 1</span>
+                <button type="button" disabled>Next</button>
+            </div>
+        </div>
+    {% else %}
+        <div class="panel empty-state reveal">
+            <div class="empty-icon" aria-hidden="true"></div>
+            <span class="badge muted">No records</span>
+            <h2>No predictions saved yet.</h2>
+            <p>Create a property estimate and it will appear here with update and delete controls.</p>
+            <a class="btn btn-primary" href="{{ url_for('index') }}#prediction">Create prediction</a>
+        </div>
+    {% endif %}
+</section>
+
+<div class="modal-backdrop" data-delete-modal aria-hidden="true">
+    <div class="panel confirm-modal" role="dialog" aria-modal="true" aria-labelledby="delete-title">
+        <h2 id="delete-title">Delete prediction?</h2>
+        <p>This removes the saved record from SQLite. This action cannot be undone.</p>
+        <form method="POST" data-delete-form>
+            <button class="btn btn-danger" type="submit">Delete record</button>
+            <button class="btn btn-secondary" type="button" data-modal-close>Cancel</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
