@@ -16,7 +16,7 @@
 
   <br />
 
-  <img src="assets/banner.png" alt="Northstone Project Banner" width="100%" style="border-radius: 8px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);" />
+  <img src="./assets/banner.png" alt="Northstone Project Banner" width="100%" />
 
 </div>
 
@@ -105,12 +105,10 @@ The project follows a modular layout separating data processing, database operat
 
 ```mermaid
 graph TD
-    A[User fills out Web UI Form] -->|JS Fetch Request| B[Flask Route Validates Input]
-    B -->|Clean Input Array| C[ML Pipeline Encoder]
-    C -->|Processed Matrix| D[LightGBM Model Inference]
-    D -->|Predicted Float Price| E[Flask Context Controller]
-    E -->|Save Log Entry| F[(SQLite Database)]
-    E -->|Return JSON Payload| A
+    A[User Input] --> B[Flask Backend]
+    B --> C[Feature Processing]
+    C --> D[LightGBM Model]
+    D --> E[Prediction Result]
 
 ```
 
@@ -133,19 +131,23 @@ LightGBM was selected over standard linear models and standard Random Forests du
 
 ## 🖼 UI/UX Showcase
 
+> 💡 *Note: If any preview images are missing below, ensure your local files are placed inside the `./assets` directory.*
+
 <div align="center">
-<table style="width:100%; border:none;">
-<tr>
-<td width="50%" style="border:none;">
-<p align="center"><strong>Dynamic Prediction Interface</strong></p>
-<img src="assets/demo.gif" alt="Prediction Interface" width="100%" style="border-radius:6px;"/>
-</td>
-<td width="50%" style="border:none;">
-<p align="center"><strong>Historical Trends Dashboard</strong></p>
-<img src="assets/banner.png" alt="Analytics Dashboard" width="100%" style="border-radius:6px;"/>
-</td>
-</tr>
-</table>
+<p><strong>Dynamic Prediction Interface</strong></p>
+<img src="./assets/demo.gif" alt="Prediction Interface" width="100%" />
+<br /><br />
+<p><strong>Homepage Dashboard</strong></p>
+<img src="./assets/homepage.png" alt="Homepage Preview" width="100%" />
+<br /><br />
+<p><strong>Analytics Trends Panel</strong></p>
+<img src="./assets/dashboard.png" alt="Analytics Dashboard" width="100%" />
+<br /><br />
+<p><strong>Historical Records Management</strong></p>
+<img src="./assets/records.png" alt="Records Management" width="100%" />
+<br /><br />
+<p><strong>Mobile Responsive Optimization</strong></p>
+<img src="./assets/mobile.png" alt="Mobile Responsive Layout" width="40%" />
 </div>
 
 ---
@@ -198,7 +200,7 @@ Open your browser and navigate to `http://127.0.0.1:5000/`.
 
 ### Technical Challenges Faced
 
-* **Data Skewing:** The original data had massive target skews due to a few extreme multi-million dollar luxury properties. This caused the model to over-predict normal suburban homes. I resolved this by applying an $I_n(x+1)$ logarithmic transformation to the target variable and using an Exponential function to back-transform predictions.
+* **Data Skewing:** The original data had massive target skews due to a few extreme multi-million dollar luxury properties. This caused the model to over-predict normal suburban homes. I resolved this by applying a logarithmic transformation to the target variable and using an Exponential function to back-transform predictions.
 * **State Syncing:** Keeping data synchronized without full-page reloads can turn into messy frontend spaghetti. I stripped out complex frameworks and used a clean, modular JavaScript module that uses the browser's native `Fetch API` to asynchronously submit data and seamlessly update the layout state.
 
 ### Key Takeaways
