@@ -15,7 +15,7 @@
   </p>
 
   <br />
-  <img width="1469" height="799" alt="Screenshot 2026-05-26 at 5 53 17 PM" src="https://github.com/user-attachments/assets/b32d474c-3ea6-44ed-9a53-316e806d6ea1" />
+
 
 
 </div>
