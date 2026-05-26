@@ -40,9 +40,10 @@
 ## 🌐 Live Demo
 
 The application is deployed and fully operational:
-👉 **[Live Deployment Link](https://your-live-demo-link.com)** *(Note: Initial page load may take a few seconds if the cloud instance is spinning up from a sleep state).*
+👉 **[Live Deployment Link](https://northstone.onrender.com/)** *(Note: Initial page load may take a few seconds if the cloud instance is spinning up from a sleep state).*
 
 ---
+<img width="209" height="60" alt="Screenshot 2026-05-26 at 5 44 26 PM" src="https://github.com/user-attachments/assets/c9cc9a1f-5c36-454b-9c46-641be89a8839" />
 
 ## 💡 Why I Built This
 
